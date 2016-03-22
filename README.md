@@ -1,5 +1,7 @@
 # touchme
 
+<h4>Interactive TSG</h4>
+
 <h3>Simple Example</h3>
 
     from touchme import touchme # Import touchme d3sg.js wrapper for IPython notebooks
