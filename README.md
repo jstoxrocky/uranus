@@ -14,3 +14,5 @@
     ch = touchme.chart()
     ch.line(dt, touchy, 'Touchy')
     ch.line(dt, feely, 'Feely')
+
+![alt tag](https://rawgit.com/jstoxrocky/touchme/master/touchme.gif)
