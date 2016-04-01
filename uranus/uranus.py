@@ -4,7 +4,7 @@ from datetime import date
 
 d3 = """<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.9/d3.js"></script>"""
 d3sg = """<script src="https://rawgit.com/jstoxrocky/d3sg/master/d3sg.js"></script>"""
-display(HTML(d3+d3sg+d3sg_style))
+display(HTML(d3+d3sg))
 
 class chart():
     
@@ -20,7 +20,13 @@ class chart():
         return js
             
     def line(self, x, y, label=''):
-
+        """
+        Add a line to the chart object.
+        Input:
+            x: A pandas.Series or list object containing datetime.date objects or strings of the form: 'YYYY-mm_dd'.
+            y: A pandas.Series or list object containing numerical values.
+            label: A string to be used in the legend and tooltip.
+        """
         if isinstance(x, s.Series):
             if isinstance(x.values[0], date):
                 x = x.map(str)
