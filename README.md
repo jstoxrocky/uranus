@@ -18,4 +18,7 @@ ch.line(dt, pluto, 'Pluto')
 ```
 
 ![alt tag](https://rawgit.com/jstoxrocky/uranus/master/uranus/uranus.gif)
+
+<h3>Support for GIF backgrounds!</h3>
+
 ![alt tag](https://rawgit.com/jstoxrocky/uranus/master/uranus/uranus_gif.gif)
