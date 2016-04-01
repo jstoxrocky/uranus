@@ -14,7 +14,7 @@ neptune_rolling_mean = [33.0, 74.5, 72.0, 81.25, 77.799999999999997, 90.16666666
     
 ch = uranus.chart()
 ch.line(dt, neptune, 'Neptune')
-ch.line(dt, pluto, 'Pluto')
+ch.line(dt, neptune_rolling_mean, '7 Day Rolling Mean')
 ```
 
 ![alt tag](https://rawgit.com/jstoxrocky/uranus/master/uranus/uranus.gif)
