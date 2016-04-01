@@ -16,3 +16,4 @@ ch.line(dt, pluto, 'Pluto')
 ```
 
 ![alt tag](https://rawgit.com/jstoxrocky/uranus/master/uranus/uranus.gif)
+![alt tag](https://rawgit.com/jstoxrocky/uranus/master/uranus/uranus_gif.gif)
