@@ -9,13 +9,17 @@ display(HTML(d3+d3sg))
 
 class chart():
     
-    def __init__(self):
+    def __init__(self, gif=None):
         self.lines = []
+        self.gif = gif
         d3sg_style = """<link href="https://rawgit.com/jstoxrocky/d3sg/master/d3sg_style.css" type="text/css" rel="stylesheet">"""
         display(HTML(d3sg_style)) # Not sure why but we lose the css if its above with the js stuff
         
     def render_js(self):
-        js = """var ch = new chart('ipython');"""
+        if self.gif:
+            js = """var ch = new chart('ipython', '{gif}');""".format(gif=self.gif)
+        else:
+            js = """var ch = new chart('ipython');"""
         js = js + "".join(self.lines)
         js += """element.append(ch.svg.node());"""
         return js
