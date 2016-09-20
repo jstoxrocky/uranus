@@ -1,5 +1,6 @@
 setup.py
 uranus/__init__.py
+uranus/dash.py
 uranus/uranus.py
 uranus.egg-info/PKG-INFO
 uranus.egg-info/SOURCES.txt
