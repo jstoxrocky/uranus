@@ -23,7 +23,7 @@ class chart():
         if self.gif:
             js = """var ch = new chart('ipython', '{gif}');""".format(gif=self.gif)
         elif self.title or self.subtitle or self.ylabel or self.xlabel:
-            js = """var ch = new chart('popsicle');"""
+            js = """var ch = new chart('ipython_report');"""
         else:
             js = """var ch = new chart('ipython');"""
 
