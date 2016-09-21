@@ -15,6 +15,7 @@ class chart():
         self.subtitle = None
         self.ylabel = None
         self.xlabel = None
+        self.ymin = None
         self.gif = gif
         d3sg_style = """<link href="https://rawgit.com/jstoxrocky/d3sg/master/d3sg_style.css" type="text/css" rel="stylesheet">"""
         display(HTML(d3sg_style)) # Not sure why but we lose the css if its above with the js stuff
@@ -36,12 +37,13 @@ class chart():
         if self.xlabel:
             js += """ch.set_xlabel('{xlabel}');""".format(xlabel=self.xlabel)
 
-        js = js + "".join(self.lines)
+        js += "".join(self.lines)
 
-
-
+        if self.ymin is not None:
+            js += """ch.set_ymin({ymin});""".format(ymin=self.ymin)
 
         js += """element.append(ch.svg.node());"""
+
         return js
             
     def line(self, x, y, label='', alpha=1.0, add_legend=True, color_from=None):
@@ -114,4 +116,9 @@ class chart():
     def set_xlabel(self, xlabel):
         self.xlabel = xlabel
         return Javascript(self.render_js())
+
+    def set_ymin(self, ymin):
+        self.ymin = ymin
+        return Javascript(self.render_js())
+
 
