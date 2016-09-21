@@ -16,6 +16,7 @@ class chart():
         self.ylabel = None
         self.xlabel = None
         self.ymin = None
+        self.ymax = None
         self.gif = gif
         d3sg_style = """<link href="https://rawgit.com/jstoxrocky/d3sg/master/d3sg_style.css" type="text/css" rel="stylesheet">"""
         display(HTML(d3sg_style)) # Not sure why but we lose the css if its above with the js stuff
@@ -41,6 +42,8 @@ class chart():
 
         if self.ymin is not None:
             js += """ch.set_ymin({ymin});""".format(ymin=self.ymin)
+        if self.ymax is not None:
+            js += """ch.set_ymax({ymax});""".format(ymax=self.ymax)
 
         js += """element.append(ch.svg.node());"""
 
@@ -119,6 +122,15 @@ class chart():
 
     def set_ymin(self, ymin):
         self.ymin = ymin
+        return Javascript(self.render_js())
+
+    def set_ymax(self, ymax):
+        self.ymax = ymax
+        return Javascript(self.render_js())
+
+    def set_ylim(self, ymin, ymax):
+        self.ymin = ymin
+        self.ymax = ymax
         return Javascript(self.render_js())
 
 
