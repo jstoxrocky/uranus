@@ -1,53 +1,104 @@
-from IPython.core.display import display, HTML, Javascript
+import jinja2
+from IPython.display import HTML, Javascript
 import pandas.core.series as s
 from datetime import date
 import json
 
-d3 = """<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.9/d3.js"></script>"""
-d3sg = """<script src="https://rawgit.com/jstoxrocky/d3sg/master/d3sg.js"></script>"""
-display(HTML(d3+d3sg))
+D3_URL = "https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.9/d3.min.js"
+D3SG_URL = "https://rawgit.com/jstoxrocky/d3sg/master/d3sg.js"
+
+REQUIREJS_JS = jinja2.Template("""
+
+  require.config({paths: {d3: "{{ d3_url[:-3] }}"}});
+  require(["d3"], function(d3){
+    window.d3 = d3;
+    $.getScript("{{ d3sg_url }}", function(){
+        
+        var cssId = 'myCss';  // you could encode the css path itself to generate id..
+        if (!document.getElementById(cssId))
+        {
+            var head  = document.getElementsByTagName('head')[0];
+            var link  = document.createElement('link');
+            link.id   = cssId;
+            link.rel  = 'stylesheet';
+            link.type = 'text/css';
+            link.href = 'https://rawgit.com/jstoxrocky/d3sg/master/d3sg_style.css';
+            link.media = 'all';
+            head.appendChild(link);
+        }
+        
+        var x = ['2016-05-04 22:00:53', '2016-05-04 22:12:23', '2016-05-04 22:27:53'];
+        var y = [200, 190, 183];
+        
+        var ch = new chart('{{chart_style}}');
+        {{lines}}
+        {{title}}
+        {{subtitle}}
+        {{ylabel}}
+        {{xlabel}}
+        {{ymin}}
+        {{ymax}}
+        element.append(ch.svg.node());
+        
+    });
+  });
+
+""")
 
 class chart():
     
     def __init__(self, gif=None):
         self.lines = []
-        self.title = None
-        self.subtitle = None
-        self.ylabel = None
-        self.xlabel = None
-        self.ymin = None
-        self.ymax = None
+        self.title = ""
+        self.subtitle = ""
+        self.ylabel = ""
+        self.xlabel = ""
+        self.ymin = ""
+        self.ymax = ""
         self.gif = gif
-        d3sg_style = """<link href="https://rawgit.com/jstoxrocky/d3sg/master/d3sg_style.css" type="text/css" rel="stylesheet">"""
-        display(HTML(d3sg_style)) # Not sure why but we lose the css if its above with the js stuff
-        
+
     def render_js(self):
+        
+        title = self.title
+        subtitle = self.subtitle
+        ylabel = self.ylabel
+        xlabel = self.xlabel
+        ymin = self.ymin
+        ymax = self.ymax
+        
         if self.gif:
-            js = """var ch = new chart('ipython', '{gif}');""".format(gif=self.gif)
+            chart_style = self.gif
         elif self.title or self.subtitle or self.ylabel or self.xlabel:
-            js = """var ch = new chart('ipython_report');"""
+            chart_style = "ipython_report"
         else:
-            js = """var ch = new chart('ipython');"""
+            chart_style = "ipython"
 
         if self.title:
-            js += """ch.set_title('{title}');""".format(title=self.title)
+            title = """ch.set_title('{title}');""".format(title=self.title)
         if self.subtitle:
-            js += """ch.set_subtitle('{subtitle}');""".format(subtitle=self.subtitle)
+            subtitle = """ch.set_subtitle('{subtitle}');""".format(subtitle=self.subtitle)
         if self.ylabel:
-            js += """ch.set_ylabel('{ylabel}');""".format(ylabel=self.ylabel)
+            ylabel = """ch.set_ylabel('{ylabel}');""".format(ylabel=self.ylabel)
         if self.xlabel:
-            js += """ch.set_xlabel('{xlabel}');""".format(xlabel=self.xlabel)
+            xlabel = """ch.set_xlabel('{xlabel}');""".format(xlabel=self.xlabel)
 
-        js += "".join(self.lines)
+        lines = "".join(self.lines)
 
-        if self.ymin is not None:
-            js += """ch.set_ymin({ymin});""".format(ymin=self.ymin)
-        if self.ymax is not None:
-            js += """ch.set_ymax({ymax});""".format(ymax=self.ymax)
+        if self.ymin or self.ymin == 0:
+            ymin = """ch.set_ymin({ymin});""".format(ymin=self.ymin)
+        if self.ymax or self.ymin == 0:
+            ymax = """ch.set_ymax({ymax});""".format(ymax=self.ymax)
 
-        js += """element.append(ch.svg.node());"""
-
-        return js
+        return REQUIREJS_JS.render(d3_url=D3_URL, 
+                                d3sg_url=D3SG_URL,
+                                lines = lines,
+                                title = title,
+                                subtitle = subtitle,
+                                ylabel = ylabel,
+                                xlabel = xlabel,
+                                ymin = ymin,
+                                ymax = ymax,
+                                chart_style = chart_style)
             
     def line(self, x, y, label='', alpha=1.0, add_legend=True, color_from=None):
         """
