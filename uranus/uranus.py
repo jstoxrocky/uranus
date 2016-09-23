@@ -9,11 +9,9 @@ D3_URL = "https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.9/d3.min.js"
 D3SG_URL = "https://rawgit.com/jstoxrocky/d3sg/master/d3sg.js"
 
 
-REQUIREJS_HTML = jinja2.Template("""
+REQUIREJS_JS = jinja2.Template("""
 
 
-
-    <script>
   require.config({paths: {d3: "{{ d3_url[:-3] }}"}});
   require(["d3"], function(d3){
     window.d3 = d3;
@@ -31,7 +29,7 @@ REQUIREJS_HTML = jinja2.Template("""
             link.media = 'all';
             head.appendChild(link);
         }
-        
+        document.getElementById("{{id}}").innerHTML = "";
         var ch = new chart('{{chart_style}}');
         {{lines}}
         {{title}}
@@ -40,11 +38,11 @@ REQUIREJS_HTML = jinja2.Template("""
         {{xlabel}}
         {{ymin}}
         {{ymax}}
+        
         document.getElementById("{{id}}").appendChild(ch.svg.node())
         
     });
   });
-  </script>
 
 """)
 
@@ -96,19 +94,19 @@ class chart():
         if self.ymax or self.ymin == 0:
             ymax = """ch.set_ymax({ymax});""".format(ymax=self.ymax)
         
-        html = REQUIREJS_HTML.render(d3_url=D3_URL, 
-                                d3sg_url=D3SG_URL,
-                                lines = lines,
-                                title = title,
-                                subtitle = subtitle,
-                                ylabel = ylabel,
-                                xlabel = xlabel,
-                                ymin = ymin,
-                                ymax = ymax,
-                                chart_style = chart_style,
-                                id = self.id)
+        js = REQUIREJS_JS.render(d3_url=D3_URL, 
+                        d3sg_url=D3SG_URL,
+                        lines = lines,
+                        title = title,
+                        subtitle = subtitle,
+                        ylabel = ylabel,
+                        xlabel = xlabel,
+                        ymin = ymin,
+                        ymax = ymax,
+                        chart_style = chart_style,
+                        id = self.id)
         
-        return HTML(html)
+        return Javascript(js)
     
             
     def line(self, x, y, label='', alpha=1.0, add_legend=True, color_from=None):

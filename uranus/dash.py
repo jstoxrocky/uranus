@@ -15,6 +15,7 @@ def toggle():
                     $('.input_prompt').css('min-width', '28ex')
                     $('.cell.code_cell.rendered.unselected').css('padding',0)
                     $('.cell.code_cell.rendered.unselected').css('border',0)
+                    $('div.output_javascript').parent('div.output_area').css("display","none")
                 } else {
                     $('div.input').show();
                     $('#notebook-container.container').css('background-color', '#ffffff')
@@ -24,6 +25,7 @@ def toggle():
                     $('.input_prompt').css('min-width', '14ex')
                     $('.cell.code_cell.rendered.unselected').css('padding',5)
                     $('.cell.code_cell.rendered.unselected').css('border',1.111)
+                    $('div.output_javascript').parent('div.output_area').css("display","block")
                 }
                     code_show = !code_show
                 } 
