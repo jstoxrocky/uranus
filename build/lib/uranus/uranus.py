@@ -1,14 +1,19 @@
 import jinja2
-from IPython.display import HTML, Javascript
+from IPython.display import HTML, Javascript, display
 import pandas.core.series as s
 from datetime import date
 import json
+from itertools import count
 
 D3_URL = "https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.9/d3.min.js"
 D3SG_URL = "https://rawgit.com/jstoxrocky/d3sg/master/d3sg.js"
 
-REQUIREJS_JS = jinja2.Template("""
 
+REQUIREJS_HTML = jinja2.Template("""
+
+
+
+    <script>
   require.config({paths: {d3: "{{ d3_url[:-3] }}"}});
   require(["d3"], function(d3){
     window.d3 = d3;
@@ -27,9 +32,6 @@ REQUIREJS_JS = jinja2.Template("""
             head.appendChild(link);
         }
         
-        var x = ['2016-05-04 22:00:53', '2016-05-04 22:12:23', '2016-05-04 22:27:53'];
-        var y = [200, 190, 183];
-        
         var ch = new chart('{{chart_style}}');
         {{lines}}
         {{title}}
@@ -38,16 +40,20 @@ REQUIREJS_JS = jinja2.Template("""
         {{xlabel}}
         {{ymin}}
         {{ymax}}
-        element.append(ch.svg.node());
+        document.getElementById("{{id}}").appendChild(ch.svg.node())
         
     });
   });
+  </script>
 
 """)
 
+
 class chart():
+    _ids = count(0)
     
     def __init__(self, gif=None):
+        self.id = self._ids.next()
         self.lines = []
         self.title = ""
         self.subtitle = ""
@@ -56,6 +62,7 @@ class chart():
         self.ymin = ""
         self.ymax = ""
         self.gif = gif
+        display(HTML("<div id='{id}'></div>".format(id=hash(self.id))))
 
     def render_js(self):
         
@@ -88,8 +95,8 @@ class chart():
             ymin = """ch.set_ymin({ymin});""".format(ymin=self.ymin)
         if self.ymax or self.ymin == 0:
             ymax = """ch.set_ymax({ymax});""".format(ymax=self.ymax)
-
-        return REQUIREJS_JS.render(d3_url=D3_URL, 
+        
+        html = REQUIREJS_HTML.render(d3_url=D3_URL, 
                                 d3sg_url=D3SG_URL,
                                 lines = lines,
                                 title = title,
@@ -98,7 +105,11 @@ class chart():
                                 xlabel = xlabel,
                                 ymin = ymin,
                                 ymax = ymax,
-                                chart_style = chart_style)
+                                chart_style = chart_style,
+                                id = self.id)
+        
+        return HTML(html)
+    
             
     def line(self, x, y, label='', alpha=1.0, add_legend=True, color_from=None):
         """
@@ -127,7 +138,7 @@ class chart():
 
         curr_line = """ch.line({x}, {y}, '{label}', {kwargs});""".format(x=x, y=y, label=label, kwargs=json.dumps(kwargs))
         self.lines.append(curr_line)
-        return Javascript(self.render_js())
+        return self.render_js()
     
     def scatter(self, x, y, label='', url='', size=20):
         """
@@ -153,35 +164,35 @@ class chart():
         kwargs = {'url':url, 'size':size}
         curr_line = """ch.scatter({x}, {y}, '{label}', {kwargs});""".format(x=x, y=y, label=label, kwargs=json.dumps(kwargs))
         self.lines.append(curr_line)
-        return Javascript(self.render_js())
+        return self.render_js()
 
     def set_title(self, title):
         self.title = title
-        return Javascript(self.render_js())
+        return self.render_js()
 
     def set_subtitle(self, subtitle):
         self.subtitle = subtitle
-        return Javascript(self.render_js())
+        return self.render_js()
 
     def set_ylabel(self, ylabel):
         self.ylabel = ylabel
-        return Javascript(self.render_js())
+        return self.render_js()
 
     def set_xlabel(self, xlabel):
         self.xlabel = xlabel
-        return Javascript(self.render_js())
+        return self.render_js()
 
     def set_ymin(self, ymin):
         self.ymin = ymin
-        return Javascript(self.render_js())
+        return self.render_js()
 
     def set_ymax(self, ymax):
         self.ymax = ymax
-        return Javascript(self.render_js())
+        return self.render_js()
 
     def set_ylim(self, ymin, ymax):
         self.ymin = ymin
         self.ymax = ymax
-        return Javascript(self.render_js())
+        return self.render_js()
 
 
