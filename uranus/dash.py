@@ -37,7 +37,8 @@ def toggle():
                 $( document ).ready(code_toggle);
 
                 </script>
-                <a href="javascript:code_toggle()">Code View</a>
+                <a href="javascript:code_toggle()">Code View</a></br>
+                <a href="https://github.com/jstoxrocky/uranus" class="fa fa-github"> Edit on GitHub</a>
                 '''
 
     display(HTML(hider_html))
