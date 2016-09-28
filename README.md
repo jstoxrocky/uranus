@@ -1,7 +1,6 @@
 # Uranus
 
 ![alt tag](https://68.media.tumblr.com/96ed9c344078766b91a1972ef90aa9e3/tumblr_nrpl86ESnc1tchrkco1_500.gif)
-![alt tag](https://68.media.tumblr.com/f88c22b3b8a29f048e78c2bd280dd9b9/tumblr_o4b2lpUOoU1qd5mq1o1_500.jpg)
 
 <h4>Uranus: Interactive Charting for Jupyter Notebooks</h4>
 
@@ -25,3 +24,5 @@ ch.line(dt, neptune_rolling_mean, '7 Day Rolling Mean', alpha=0.3, color_from='N
 <h3>Support for GIF backgrounds!</h3>
 
 ![alt tag](https://rawgit.com/jstoxrocky/uranus/master/uranus/uranus_gif.gif)
+
+![alt tag](https://68.media.tumblr.com/f88c22b3b8a29f048e78c2bd280dd9b9/tumblr_o4b2lpUOoU1qd5mq1o1_500.jpg)
