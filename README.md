@@ -1,5 +1,8 @@
 # Uranus
 
+![alt tag](https://68.media.tumblr.com/96ed9c344078766b91a1972ef90aa9e3/tumblr_nrpl86ESnc1tchrkco1_500.gif)
+![alt tag](https://68.media.tumblr.com/f88c22b3b8a29f048e78c2bd280dd9b9/tumblr_o4b2lpUOoU1qd5mq1o1_500.jpg)
+
 <h4>Uranus: Interactive Charting for Jupyter Notebooks</h4>
 
 Uranus is an interactive charting library built in d3.js designed to be used easily and intuitively within the Jupyter (IPython) framework. Gif images can now be used as backgrounds for charts as well. 
