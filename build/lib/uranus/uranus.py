@@ -137,10 +137,41 @@ class chart():
         curr_line = """ch.line({x}, {y}, '{label}', {kwargs});""".format(x=x, y=y, label=label, kwargs=json.dumps(kwargs))
         self.lines.append(curr_line)
         return self.render_js()
+
+
+    def bar(self, x, y, label='', alpha=1.0, add_legend=True, color_from=None):
+        """
+        Add a bar to the chart object.
+        Input:
+            x: pandas.Series or list, containing datetime.date objects or strings of the form: 'YYYY-mm_dd'.
+            y: pandas.Series or list, containing numerical values.
+            label: string, to be used in the legend and tooltip.
+            alpha: float, opacity: [0.0, 1.0].
+            add_legend: boolean, either adds or removes this line from the legend.
+            color_from: string, using the label from another line you can copy its color onto this line.
+        """
+        # pandas.Series to list
+        if isinstance(x, s.Series):
+            x = x.tolist()
+        # datetime.date to str
+        if isinstance(x[0], date):
+            x = [str(dt) for dt in x]
+        # pandas.Series to list
+        if isinstance(y, s.Series):
+            y = y.tolist()
+
+        kwargs = {'alpha':alpha, 'add_legend':add_legend,}
+        if color_from:
+            kwargs['color_from'] = color_from
+
+        curr_line = """ch.bar({x}, {y}, '{label}', {kwargs});""".format(x=x, y=y, label=label, kwargs=json.dumps(kwargs))
+        self.lines.append(curr_line)
+        return self.render_js()
     
+
     def scatter(self, x, y, label='', url='', size=20):
         """
-        Add a line to the chart object.
+        Add a scatter to the chart object.
         Input:
             x: pandas.Series or list, containing datetime.date objects or strings of the form: 'YYYY-mm_dd'.
             y: pandas.Series or list, containing numerical values.

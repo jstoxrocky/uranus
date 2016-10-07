@@ -36,8 +36,23 @@ def toggle():
 
                 $( document ).ready(code_toggle);
 
+
+                var cssId = 'myCss';  // you could encode the css path itself to generate id..
+                if (!document.getElementById(cssId))
+                {
+                    var head  = document.getElementsByTagName('head')[0];
+                    var link  = document.createElement('link');
+                    link.id   = cssId;
+                    link.rel  = 'stylesheet';
+                    link.type = 'text/css';
+                    link.href = 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css';
+                    link.media = 'all';
+                    head.appendChild(link);
+                }
+
                 </script>
-                <a href="javascript:code_toggle()">Code View</a>
+                <a href="javascript:code_toggle()">View Code</a></br>
+                <a href="https://github.com/jstoxrocky/uranus" class="fa fa-github"> Edit on GitHub</a>
                 '''
 
     display(HTML(hider_html))
@@ -45,3 +60,6 @@ def toggle():
 def set_favicon(favicon):
     f = """$("link[rel='shortcut icon']").attr("href", "{favicon}");""".format(favicon=favicon)
     display(Javascript(f))
+
+
+
