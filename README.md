@@ -7,6 +7,7 @@
 Uranus is an interactive charting library built in d3.js designed to be used easily and intuitively within the Jupyter (IPython) framework. Gif images can now be used as backgrounds for charts as well. 
 
 <h3>Simple Example</h3>
+
 ```python
 from uranus import uranus
     
